@@ -27,9 +27,11 @@ coyote_counter = 0;
 // Jump Buffering
 jump_buffer = 5;
 jump_buffer_counter = 0;
+fast_fall_speed = 8; // Modify this value to set the desired fast fall speed
+is_fast_falling = false;
 
 reflecting = false;
-reflect_duration = 0;
+reflect_timer = 0;
 max_reflect_duration = 5; // The number of frames the reflect action lasts
 
 // Animation sprites
@@ -41,4 +43,11 @@ spr_rising = FinnJumpRise;
 spr_falling = FinnJumpFall;
 spr_spinball = FinnSpinball;
 spr_spinhori = FinnSpinHorizontal;
+spr_reflector = FinnReflectAir;
 reflected = false; 
+reflect_sprite = spr_spinball;
+spr_orbreflect = Reflectorsphere;
+spr_orbreflectexplode = Reflectorsphereexplode;
+global.orb_effect = noone;
+
+reflect_state = 0; // 0: Idle, 1: Startup, 2: Active, 3: Fading

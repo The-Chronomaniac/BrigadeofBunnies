@@ -1,0 +1,11 @@
+spr_orbreflect = Reflectorsphere;
+spr_orbreflectexplode = Reflectorsphereexplode;
+alpha_speed = 0.15;
+fadeIn = true;
+fade_out = false;
+exploded = false;
+alpha = 0;
+explode_alpha = 0.75;
+orb_timer = 0;
+prev_reflect_state = -1;
+scale_speed = .1;
