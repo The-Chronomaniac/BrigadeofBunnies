@@ -20,6 +20,7 @@ max_walk_speed = 7;
 ground_friction = 0.8;
 air_control = 0.5;
 bounce_height = -10; // Initial bounce height
+sprint_ready = false;
 // Coyote Time
 coyote_time = 10;
 coyote_counter = 0;
@@ -34,6 +35,11 @@ reflecting = false;
 reflect_timer = 0;
 max_reflect_duration = 5; // The number of frames the reflect action lasts
 
+// sprint variables
+sprint = false;
+doubleTapDelay = 0;
+lastKeyPressed = "";
+
 // Animation sprites
 jump_animation_timer = -1;
 spr_idle = FinnactiveIdles;
@@ -43,11 +49,12 @@ spr_rising = FinnJumpRise;
 spr_falling = FinnJumpFall;
 spr_spinball = FinnSpinball;
 spr_spinhori = FinnSpinHorizontal;
-spr_reflector = FinnReflectAir;
+spr_sprint = FinSprint;
 reflected = false; 
 reflect_sprite = spr_spinball;
 spr_orbreflect = Reflectorsphere;
 spr_orbreflectexplode = Reflectorsphereexplode;
+spr_crouch = FinnCrouch;
 global.orb_effect = noone;
 
 reflect_state = 0; // 0: Idle, 1: Startup, 2: Active, 3: Fading
