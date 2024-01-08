@@ -6,54 +6,27 @@ key_jump = keyboard_check(ord("Z")) || gamepad_button_check(global.gamepad, gp_f
 key_jump_pressed = keyboard_check_pressed(ord("Z")) || gamepad_button_check_pressed(global.gamepad, gp_face1);
 key_jump_released = keyboard_check_released(ord("Z")) || gamepad_button_check_released(global.gamepad, gp_face1);
 key_reflect = keyboard_check_pressed(ord("X")) || gamepad_button_check_pressed(global.gamepad, gp_face2);
-key_sprint_ready = key_down && hsp == 0 && place_meeting(x, y + 1, oWall);
-key_sprint_charged = false; // This will be set to true when the sprint is charged
-
 
 // Reflect state input
 if (key_reflect && reflect_state == 0) {
     reflect_state = 1;
 }
 
-	// Jump logic	
-if (key_jump_pressed && place_meeting(x, y + 1, oWall)) {	
-    jump_animation_timer = 15;	
+// Jump logic
+if (key_jump_pressed && place_meeting(x, y + 1, oWall)) {
+    jump_animation_timer = 15;
 }
 
-// Regular movement calculations
+// Movement calculations
 var move = key_right - key_left;
 var control = place_meeting(x, y + 1, oWall) ? 1 : air_control;
 
-// Check for sprint ready state
-if (key_sprint_ready) {
-    if (key_jump_pressed && !key_sprint_charged) {
-        // Charge the sprint if in sprint ready state and jump is pressed
-        key_sprint_charged = true;
-        key_jump_pressed = false;  // So it won't be processed again by other jump code
-    }
-} else {
-    if (key_sprint_charged) {
-        // Launch into sprint if sprint is charged and down key is released
-        hsp = image_xscale * max_walk_speed * 2;  // Launch the player at 2x speed
-        key_sprint_charged = false;  // Reset the charged state
-    } 
-    // Normal movement calculations
-    var move = key_right - key_left;
-    var control = place_meeting(x, y + 1, oWall) ? 1 : air_control;
-    hsp += move * acceleration * control;
-    hsp = clamp(hsp, -max_walk_speed, max_walk_speed);
-    if (move == 0 && place_meeting(x, y + 1, oWall)) {
-        hsp = lerp(hsp, 0, ground_friction);
-    }
-}
-
 // Acceleration, deceleration, and friction
-    hsp += move * acceleration * control;
-    hsp = clamp(hsp, -max_walk_speed, max_walk_speed);
-    if (move == 0 && place_meeting(x, y + 1, oWall)) {
-        hsp = lerp(hsp, 0, ground_friction);
-    }
-
+hsp += move * acceleration * control;
+hsp = clamp(hsp, -max_walk_speed, max_walk_speed);
+if (move == 0 && place_meeting(x, y + 1, oWall)) {
+    hsp = lerp(hsp, 0, ground_friction);
+}
 
 
 
@@ -68,14 +41,14 @@ if (key_down && !place_meeting(x, y + 1, oWall)) {
     vsp = max(vsp, fast_fall_speed);
 }
 
-// Coyote Time and Jump Buffering	
-coyote_counter = place_meeting(x, y + 1, oWall) ? coyote_time : coyote_counter - 1;	
+// Coyote Time and Jump Buffering
+coyote_counter = place_meeting(x, y + 1, oWall) ? coyote_time : coyote_counter - 1;
 jump_buffer_counter = key_jump_pressed ? jump_buffer : jump_buffer_counter - 1;
 
-if (jump_buffer_counter > 0 && coyote_counter > 0) {	
-    vsp = -15;	
-    jump_buffer_counter = 0;	
-    coyote_counter = 0;	
+if (jump_buffer_counter > 0 && coyote_counter > 0) {
+    vsp = -15;
+    jump_buffer_counter = 0;
+    coyote_counter = 0;
 }
 
 if (place_meeting(x, y + 1, oWall)) {
@@ -110,6 +83,7 @@ for (var i = 0; i < abs(vsp); i++) {
         break;
     }
 }
+
 // Reflect state and timer
 if (reflect_state > 0) {
     reflect_timer += 1;
@@ -164,19 +138,8 @@ if (reflect_state == 2) {
 if (place_meeting(x, y + 1, oWall)) {
     // Grounded
     sprite_index = hsp == 0 ? spr_idle : spr_run;
-	if(key_sprint_ready)
-	{
-	sprite_index  = spr_crouch;
-		if(image_index == 4)
-		{
-			image_speed = 0;
-		}
-	}
-	else
-	{
     image_speed = hsp == 0 ? 1 : 2;
     reflected = false;
-	}
 } else {
     // In air
     if (jump_animation_timer > 0 && vsp < 0) {
@@ -194,12 +157,14 @@ if (!place_meeting(x, y + 1, oWall) && jump_animation_timer > 0) {
     jump_animation_timer -= 1;
 }
 
+// Variable jump height
+if (key_jump_released && vsp < 0) {
+    vsp *= 0.5;
+}
 
 // Flip the sprite based on movement direction
-/**if (key_left) {
+if (key_left) {
     image_xscale = -1;
 } else if (key_right) {
     image_xscale = 1;
 }
-**/
-if (hsp!= 0) image_xscale = sign(hsp);
