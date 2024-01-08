@@ -196,5 +196,10 @@ if (!place_meeting(x, y + 1, oWall) && jump_animation_timer > 0) {
 
 
 // Flip the sprite based on movement direction
-
+/**if (key_left) {
+    image_xscale = -1;
+} else if (key_right) {
+    image_xscale = 1;
+}
+**/
 if (hsp!= 0) image_xscale = sign(hsp);
