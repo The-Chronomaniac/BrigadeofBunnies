@@ -23,11 +23,7 @@ bounce_height = -10; // Initial bounce height
 sprint_ready = false;
 // Coyote Time
 coyote_time = 10;
-coyote_counter = 0;
-
-// Jump Buffering
-jump_buffer = 5;
-jump_buffer_counter = 0;
+ 
 fast_fall_speed = 8; // Modify this value to set the desired fast fall speed
 is_fast_falling = false;
 
